@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #00a4e4;
+  --color-secondary: #008ed4;
+  --color-tertiary: #0071ab;
+  --color-buttonGray: rgba(187, 204, 221, 1);
+
+}
