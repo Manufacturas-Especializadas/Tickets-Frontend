@@ -45,6 +45,7 @@ export const AdminIndex = () => {
             title: '¿Estás seguro?',
             text: `Vas a eliminar el ticket: ${row.name}`,
             icon: 'warning',
+            showCancelButton: true,
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
             confirmButtonText: 'Sí, eliminar',
