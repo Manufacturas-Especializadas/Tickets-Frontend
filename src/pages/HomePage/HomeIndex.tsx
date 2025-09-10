@@ -237,7 +237,7 @@ export const HomeIndex = () => {
                                         onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                                         disabled={currentPage === 1}
                                         className="px-3 py-1 rounded border border-gray-300 bg-white text-gray-700
-                                            disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                                            disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 hover:cursor-pointer"
                                     >
                                         Anterior
                                     </button>
@@ -251,7 +251,7 @@ export const HomeIndex = () => {
                                                     className={`px-3 py-1 rounded text-sm font-medium transition ${currentPage === page
                                                         ? 'bg-indigo-600 text-white'
                                                         : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
-                                                        }`}
+                                                        } hover:cursor-pointer`}
                                                 >
                                                     {page}
                                                 </button>
@@ -263,7 +263,7 @@ export const HomeIndex = () => {
                                         onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                                         disabled={currentPage === totalPages}
                                         className="px-3 py-1 rounded border border-gray-300 bg-white text-gray-700 disabled:opacity-50
-                                                disabled:cursor-not-allowed hover:bg-gray-50"
+                                                disabled:cursor-not-allowed hover:bg-gray-50 hover:cursor-pointer"
                                     >
                                         Siguiente
                                     </button>
