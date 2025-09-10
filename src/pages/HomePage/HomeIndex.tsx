@@ -8,7 +8,7 @@ export const HomeIndex = () => {
     const [tickets, setTickets] = useState<Tickets[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const ticketsPerPage = 2;
+    const ticketsPerPage = 5;
     const navigate = useNavigate();
 
     useEffect(() => {
