@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import type { Category } from "../../interfaces/Categories/interfaceCategory";
-import { ticketFormService, type TicketFormData } from "../../api/services/ticketFormService";
+import { ticketFormService, type FoundTicket, type TicketFormData } from "../../api/services/ticketFormService";
 import Swal from "sweetalert2";
+import { TicketSearchBar } from "../../components/TicketSearchBar/TicketSearchBar";
+import { TicketCard } from "../../components/TicketCard/TicketCard";
 
 interface FormErrors {
     name?: string;
@@ -26,6 +28,10 @@ export const TicketForm = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitSuccess, setSubmitSuccess] = useState(false);
     const [categories, setCategories] = useState<Category[]>([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [searchLoading, setSearchLoading] = useState(false);
+    const [foundTicket, setFoundTicket] = useState<FoundTicket | null>(null);
+    const [hasSearched, setHasSearched] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -62,6 +68,48 @@ export const TicketForm = () => {
                 [name]: undefined
             }));
         }
+    };
+
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(e.target.value);
+        if (foundTicket) setFoundTicket(null);
+    };
+
+    const handleSearch = async () => {
+        if (!searchTerm.trim() || searchTerm.length < 2) {
+            Swal.fire({
+                title: 'Buscar',
+                text: 'Por favor, ingresa al menos 2 caracteres para buscar',
+                icon: 'info'
+            });
+            return;
+        }
+
+        setSearchLoading(true);
+
+        try {
+            const result = await ticketFormService.searchTicketByName(searchTerm);
+
+            if (result.success && result.data) {
+                setFoundTicket(result.data);
+            } else {
+                throw new Error(result.message || "Ticket no encontrado");
+            }
+        } catch (error) {
+            Swal.fire({
+                title: 'No encontrado',
+                text: error instanceof Error ? error.message : 'Error desconocido',
+                icon: 'warning'
+            });
+            setFoundTicket(null);
+        } finally {
+            setSearchLoading(false);
+        }
+    };
+
+    const handleClearSearch = () => {
+        setSearchTerm("");
+        setFoundTicket(null);
     };
 
     const validate = (): boolean => {
@@ -104,7 +152,7 @@ export const TicketForm = () => {
                     statusId: 1
                 });
 
-                setTimeout(() => navigate('/'), 1500);
+                if (foundTicket) handleClearSearch();
             } else {
                 throw new Error(response.message || 'No se pudo registrar el ticket');
             }
@@ -141,6 +189,28 @@ export const TicketForm = () => {
                         <span className="text-green-800 font-medium">¡Ticket enviado con éxito!</span>
                     </div>
                 )}
+
+                <TicketSearchBar
+                    searchTerm={searchTerm}
+                    onSearch={handleSearch}
+                    onClear={handleClearSearch}
+                    onChange={handleSearchChange}
+                    isSearching={searchLoading}
+                />
+
+                {
+                    foundTicket ? (
+                        <TicketCard
+                            ticket={foundTicket}
+                            categories={categories}
+                            onClear={handleClearSearch}
+                        />
+                    ) : hasSearched && searchTerm && !searchLoading && foundTicket === null ? (
+                        <div className="mb-8 p-5 bg-gray-50 rounded-xl border border-dashed border-gray-300 text-center">
+                            <p className="text-gray-500">No se encontró ningún ticket con ese nombre.</p>
+                        </div>
+                    ) : null
+                }
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Nombre */}
@@ -299,7 +369,7 @@ export const TicketForm = () => {
                         )}
                     </div>
 
-                    <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                    <div className="flex justify-center w-full sm:flex-row gap-4 pt-4">
                         <button
                             type="submit"
                             disabled={isSubmitting}
@@ -338,23 +408,7 @@ export const TicketForm = () => {
                                 'Enviar Ticket'
                             )}
                         </button>
-
-                        <button
-                            type="button"
-                            onClick={() => navigate("/")}
-                            disabled={isSubmitting}
-                            className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl 
-                            font-medium text-gray-700 border border-gray-300 bg-white hover:bg-gray-50 
-                            shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-[1.01] 
-                            active:scale-[0.99] hover:cursor-pointer"
-                        >
-                            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                            Cancelar
-                        </button>
                     </div>
-
                 </form>
             </div>
         </div>
