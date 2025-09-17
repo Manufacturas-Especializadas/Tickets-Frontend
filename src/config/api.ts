@@ -10,6 +10,7 @@ export const API_CONFIG = {
     endpoints: {
         ticketForm: {
             tickets: '/api/TicketForm/GetTickets',
+            search: '/api/TicketForm/SearchTicketByName',
             categories: '/api/TicketForm/GetCategories',
             register: '/api/TicketForm/RegisterTicket',
             update: '/api/TicketForm/Update/',
