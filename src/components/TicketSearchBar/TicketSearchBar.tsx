@@ -21,7 +21,7 @@ export const TicketSearchBar: React.FC<Props> = ({
                 <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
                     <div className="flex-grow w-full">
                         <label htmlFor="ticket-search" className="block text-sm font-medium text-gray-700 mb-1">
-                            Buscar ticket por nombre
+                            Buscar ticket por nombre de usuario
                         </label>
                         <div className="relative">
                             <input
