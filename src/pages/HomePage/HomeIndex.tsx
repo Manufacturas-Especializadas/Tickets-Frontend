@@ -309,20 +309,24 @@ export const HomeIndex = () => {
                                     <button
                                         onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                                         disabled={currentPage === 1}
-                                        className="px-3 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 disabled:opacity-50 hover:bg-gray-50 transition"
+                                        className="px-3 py-2 rounded-lg border border-gray-300 bg-white 
+                                        text-gray-700 disabled:opacity-50 hover:bg-gray-50 transition
+                                        hover:cursor-pointer"
                                         aria-label="Página anterior"
                                     >
                                         Anterior
                                     </button>
 
-                                    <div className="flex gap-1">
+                                    <div className="flex gap-1 hover:cursor-pointer">
                                         {renderPaginationButtons()}
                                     </div>
 
                                     <button
                                         onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                                         disabled={currentPage === totalPages}
-                                        className="px-3 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 disabled:opacity-50 hover:bg-gray-50 transition"
+                                        className="px-3 py-2 rounded-lg border border-gray-300 bg-white 
+                                        text-gray-700 disabled:opacity-50 hover:bg-gray-50 transition
+                                        hover:cursor-pointer"
                                         aria-label="Siguiente página"
                                     >
                                         Siguiente
