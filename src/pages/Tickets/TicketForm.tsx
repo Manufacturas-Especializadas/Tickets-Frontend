@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import React, { useEffect, useRef, useState } from "react";
 import type { Category } from "../../interfaces/Categories/interfaceCategory";
 import { ticketFormService, type FoundTicket, type TicketFormData } from "../../api/services/ticketFormService";
 import Swal from "sweetalert2";
@@ -31,8 +30,7 @@ export const TicketForm = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [searchLoading, setSearchLoading] = useState(false);
     const [foundTicket, setFoundTicket] = useState<FoundTicket | null>(null);
-    const [hasSearched, setHasSearched] = useState(false);
-    const navigate = useNavigate();
+    const hasSearchedRef = useRef(false);
 
     useEffect(() => {
         const loadCategories = async () => {
@@ -86,6 +84,7 @@ export const TicketForm = () => {
         }
 
         setSearchLoading(true);
+        hasSearchedRef.current = true;
 
         try {
             const result = await ticketFormService.searchTicketByName(searchTerm);
@@ -110,6 +109,7 @@ export const TicketForm = () => {
     const handleClearSearch = () => {
         setSearchTerm("");
         setFoundTicket(null);
+        hasSearchedRef.current = false;
     };
 
     const validate = (): boolean => {
@@ -152,7 +152,7 @@ export const TicketForm = () => {
                     statusId: 1
                 });
 
-                if (foundTicket) handleClearSearch();
+                handleClearSearch();
             } else {
                 throw new Error(response.message || 'No se pudo registrar el ticket');
             }
@@ -205,7 +205,7 @@ export const TicketForm = () => {
                             categories={categories}
                             onClear={handleClearSearch}
                         />
-                    ) : hasSearched && searchTerm && !searchLoading && foundTicket === null ? (
+                    ) : hasSearchedRef.current && searchTerm && !searchLoading && foundTicket === null ? (
                         <div className="mb-8 p-5 bg-gray-50 rounded-xl border border-dashed border-gray-300 text-center">
                             <p className="text-gray-500">No se encontró ningún ticket con ese nombre.</p>
                         </div>
