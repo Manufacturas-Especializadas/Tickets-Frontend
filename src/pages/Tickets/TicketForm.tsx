@@ -104,7 +104,7 @@ export const TicketForm = () => {
                     statusId: 1
                 });
 
-                setTimeout(() => navigate('/'), 1500);
+                // setTimeout(() => navigate('/'), 1500);
             } else {
                 throw new Error(response.message || 'No se pudo registrar el ticket');
             }
