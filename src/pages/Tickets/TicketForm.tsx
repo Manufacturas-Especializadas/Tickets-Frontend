@@ -127,14 +127,27 @@ export const TicketForm = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!validate()) return;
+        if (!validate() || isSubmitting) return;
 
         setIsSubmitting(true);
+
+        Swal.fire({
+            title: 'Enviando...',
+            text: 'Por favor, espera mientras procesamos tu solicitud.',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
 
         try {
             const response = await ticketFormService.registerTicket(formData);
             if (response.success) {
                 setSubmitSuccess(true);
+
+                Swal.close();
+
                 Swal.fire({
                     title: '¡Éxito!',
                     text: 'Tu ticket se ha enviado correctamente.',
@@ -158,6 +171,7 @@ export const TicketForm = () => {
             }
         } catch (error) {
             console.error('Error submitting ticket:', error);
+            Swal.close();
             Swal.fire({
                 title: 'Oooops...',
                 text: 'Hubo un error al enviar el ticket. Inténtalo de nuevo.',
