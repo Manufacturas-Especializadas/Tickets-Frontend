@@ -216,7 +216,7 @@ export const TicketForm = () => {
                     {/* Nombre */}
                     <div>
                         <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
-                            Nombre completo *
+                            Nombre *
                         </label>
                         <input
                             type="text"
