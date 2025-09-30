@@ -5,5 +5,18 @@
             "/assets/*",
             "/favicon.ico"
         ]
-    }
+    },
+    "networking": {
+        "allowedIpRanges": [
+            "200.76.19.130/32"
+        ]
+    },
+    "routes": [
+        {
+            "route": "/*",
+            "allowedRoles": [
+                "anonymous"
+            ]
+        }
+    ]
 }
