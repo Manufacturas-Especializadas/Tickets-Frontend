@@ -12,6 +12,7 @@ export const API_CONFIG = {
             tickets: '/api/TicketForm/GetTickets',
             search: '/api/TicketForm/SearchTicketByName',
             categories: '/api/TicketForm/GetCategories',
+            report: "/api/TicketForm/DownloadReport",
             register: '/api/TicketForm/RegisterTicket',
             update: '/api/TicketForm/Update/',
             delete: '/api/TicketForm/Delete/'

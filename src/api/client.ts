@@ -53,6 +53,36 @@ class ApiClient {
     delete<T>(endpoint: string) {
         return this.request<T>(endpoint, { method: 'DELETE' });
     }
+
+    async downloadReport(endpoint: string, fileName: string): Promise<void> {
+        const url = `${this.baseUrl}${endpoint}`;
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error al descargar: ${response.status} ${response.statusText}`);
+            }
+
+            const blob = await response.blob();
+
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = downloadUrl;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(downloadUrl);
+
+        } catch (error) {
+            console.error("Error en downloadReport:", error);
+            throw error;
+        }
+    }
 }
 
 export const apiClient = new ApiClient();

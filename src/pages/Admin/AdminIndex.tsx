@@ -246,6 +246,38 @@ export const AdminIndex = () => {
         });
     };
 
+    const handleDownloadReport = async () => {
+        Swal.fire({
+            title: "Generando archivo...",
+            text: "Por favor espera mientras se prepara tu archivo excel",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        try {
+            await ticketFormService.downloadReport();
+            Swal.close();
+
+            await Swal.fire({
+                icon: "success",
+                title: "¡Descarga completada!",
+                text: "El archivo excel se ha descargado correctamente",
+                timer: 2500,
+                showConfirmButton: false,
+            });
+        } catch (error: any) {
+            Swal.close();
+            await Swal.fire({
+                icon: "error",
+                title: "Error al descargar",
+                text: error.message || "Ocurrio un problema al generar el archiv. Inténtalo de nuevo"
+            });
+        }
+    };
+
     const columns = [
         {
             name: "Nombre",
@@ -302,7 +334,9 @@ export const AdminIndex = () => {
                         </h1>
 
                         <div className="flex space-x-3">
-                            <button className="bg-primary hover:bg-secondary text-white px-4 py-2 rounded-md
+                            <button
+                                onClick={handleDownloadReport}
+                                className="bg-primary hover:bg-secondary text-white px-4 py-2 rounded-md
                                 transition-colors hover:cursor-pointer" disabled={loading}>
                                 Descargar información
                             </button>

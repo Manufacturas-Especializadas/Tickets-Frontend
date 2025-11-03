@@ -26,6 +26,7 @@ class TicketFormService {
     private categoriesEnpoint = API_CONFIG.endpoints.ticketForm.categories;
     private ticketsEnpoint = API_CONFIG.endpoints.ticketForm.tickets;
     private searchByName = API_CONFIG.endpoints.ticketForm.search;
+    private reportEndpoint = API_CONFIG.endpoints.ticketForm.report;
     private registerEnpoint = API_CONFIG.endpoints.ticketForm.register;
     private udpateEnpoint = API_CONFIG.endpoints.ticketForm.update;
     private deleteEnpoint = API_CONFIG.endpoints.ticketForm.delete;
@@ -36,6 +37,10 @@ class TicketFormService {
 
     async getTickets(): Promise<Tickets[]> {
         return apiClient.get<Tickets[]>(this.ticketsEnpoint);
+    }
+
+    async downloadReport(): Promise<void> {
+        await apiClient.downloadReport(this.reportEndpoint, "Reporte de tickets");
     }
 
     async registerTicket(data: TicketFormData): Promise<TicketResponse> {
