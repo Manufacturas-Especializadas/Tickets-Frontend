@@ -11,7 +11,7 @@ export const AdminIndex = () => {
     const [category, setCategory] = useState<Category[]>([]);
     const [tickets, setTickets] = useState<Tickets[]>([]);
     const [actionLoading, setActionLoading] = useState<number | null>(null);
-    const [filterStatus, setFilterStatus] = useState<string>("");
+    const [filterStatus, setFilterStatus] = useState<string>("all");
 
     useEffect(() => {
         const loadTickets = async () => {
