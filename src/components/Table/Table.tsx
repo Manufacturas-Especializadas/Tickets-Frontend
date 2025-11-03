@@ -1,3 +1,4 @@
+import type React from "react";
 import DataTable, { type TableColumn } from "react-data-table-component";
 
 interface Props<T> {
@@ -12,6 +13,7 @@ interface Props<T> {
     pagination?: boolean;
     selectableRows?: boolean;
     actionLoading?: number | null;
+    subHeaderComponent?: React.ReactNode;
 }
 
 export const Table = <T extends object>({
@@ -25,7 +27,8 @@ export const Table = <T extends object>({
     pagination = true,
     selectableRows = false,
     onRowClicked,
-    actionLoading
+    actionLoading,
+    subHeaderComponent
 }: Props<T>) => {
 
     const customStyles = {
@@ -136,6 +139,8 @@ export const Table = <T extends object>({
                     onRowClicked={onRowClicked}
                     highlightOnHover
                     pointerOnHover={!!onRowClicked}
+                    subHeader={subHeaderComponent}
+                    subHeaderComponent={subHeaderComponent}
                 />
             </div>
         </>

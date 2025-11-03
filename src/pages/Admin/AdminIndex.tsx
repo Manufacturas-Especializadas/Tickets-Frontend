@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ticketFormService } from "../../api/services/ticketFormService";
 import { Table } from "../../components/Table/Table";
 import type { Tickets } from "../../interfaces/Tickets/interfaceTickets";
@@ -11,6 +11,7 @@ export const AdminIndex = () => {
     const [category, setCategory] = useState<Category[]>([]);
     const [tickets, setTickets] = useState<Tickets[]>([]);
     const [actionLoading, setActionLoading] = useState<number | null>(null);
+    const [filterStatus, setFilterStatus] = useState<string>("");
 
     useEffect(() => {
         const loadTickets = async () => {
@@ -109,7 +110,7 @@ export const AdminIndex = () => {
                     </div>
                     <div style="margin-bottom: 15px;">
                         <label style="display: block; margin-bottom: 5px; font-weight: bold;">Categoría</label>
-                        <select id="swal-category" class="swal2-select" style="width: 100%; padding: 8px; border: 1px solid #d9d9d9; border-radius: 4px;">
+                        <select id="swal-category" class="swal2-select" style="width: 70%; padding: 8px; border: 1px solid #d9d9d9; border-radius: 4px;">
                             ${category.map(cat => `
                                 <option value="${cat.id}" ${cat.id === row.categoryId ? 'selected' : ''}>${cat.name}</option>
                             `).join('')}
@@ -117,11 +118,11 @@ export const AdminIndex = () => {
                     </div>
                     <div style="margin-bottom: 15px;">
                         <label style="display: block; margin-bottom: 5px; font-weight: bold;">Descripción del problema</label>
-                        <textarea id="swal-problemDescription" class="swal2-textarea" placeholder="Describe el problema..." style="width: 100%;">${row.problemDescription || ''}</textarea>
+                        <textarea id="swal-problemDescription" class="swal2-textarea" placeholder="Describe el problema..." style="width: 70%;">${row.problemDescription || ''}</textarea>
                     </div>
                     <div style="margin-bottom: 15px;">
                         <label style="display: block; margin-bottom: 5px; font-weight: bold;">Estatus</label>
-                        <select id="swal-status" class="swal2-select" style="width: 100%; padding: 8px; border: 1px solid #d9d9d9; border-radius: 4px;">
+                        <select id="swal-status" class="swal2-select" style="width: 70%; padding: 8px; border: 1px solid #d9d9d9; border-radius: 4px;">
                             <option value="1" ${row.statusId === 1 ? 'selected' : ''}>Pendiente</option>
                             <option value="2" ${row.statusId === 2 ? 'selected' : ''}>En progreso</option>
                             <option value="3" ${row.statusId === 3 ? 'selected' : ''}>Resuelto</option>
@@ -129,6 +130,7 @@ export const AdminIndex = () => {
                     </div>
                 </div>
             `,
+            width: '600px',
             focusConfirm: false,
             showCancelButton: true,
             confirmButtonText: 'Guardar cambios',
@@ -262,6 +264,34 @@ export const AdminIndex = () => {
         },
     ];
 
+    const filteredTickets = useMemo(() => {
+        if (filterStatus === "all") {
+            return tickets;
+        };
+
+        return tickets.filter(ticket => ticket.status === filterStatus);
+    }, [tickets, filterStatus]);
+
+    const subHeaderComponent = (
+        <div className="flex items-center gap-2 py-2 justify-end">
+            <label className="font-semibold text-gray-700 text-sm">
+                Filtar por estatus
+            </label>
+
+            <select
+                id="status-filter"
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+                className="block w-52 px-3 py-2 rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+            >
+                <option value="all">Todos</option>
+                <option value="Abierto">Abierto</option>
+                <option value="En progreso">En progreso</option>
+                <option value="Cerrado">Cerrado</option>
+            </select>
+        </div>
+    );
+
     return (
         <>
             <div className="min-h-screen bg-gray-50 p-4 md:p-8">
@@ -299,12 +329,13 @@ export const AdminIndex = () => {
                                 <>
                                     <Table<Tickets>
                                         columns={columns}
-                                        data={tickets}
+                                        data={filteredTickets}
                                         loading={loading}
                                         onDelete={handleDelete}
                                         onEdit={handleEdit}
                                         onView={handleView}
                                         actionLoading={actionLoading}
+                                        subHeaderComponent={subHeaderComponent}
                                         title="Lista de Tickets"
                                         pagination
                                     />
