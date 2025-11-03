@@ -109,7 +109,7 @@ export const AdminIndex = () => {
                     </div>
                     <div style="margin-bottom: 15px;">
                         <label style="display: block; margin-bottom: 5px; font-weight: bold;">Categoría</label>
-                        <select id="swal-category" class="swal2-select" style="width: 100%; padding: 8px; border: 1px solid #d9d9d9; border-radius: 4px;">
+                        <select id="swal-category" class="swal2-select" style="width: 70%; padding: 8px; border: 1px solid #d9d9d9; border-radius: 4px;">
                             ${category.map(cat => `
                                 <option value="${cat.id}" ${cat.id === row.categoryId ? 'selected' : ''}>${cat.name}</option>
                             `).join('')}
@@ -117,11 +117,11 @@ export const AdminIndex = () => {
                     </div>
                     <div style="margin-bottom: 15px;">
                         <label style="display: block; margin-bottom: 5px; font-weight: bold;">Descripción del problema</label>
-                        <textarea id="swal-problemDescription" class="swal2-textarea" placeholder="Describe el problema..." style="width: 100%;">${row.problemDescription || ''}</textarea>
+                        <textarea id="swal-problemDescription" class="swal2-textarea" placeholder="Describe el problema..." style="width: 70%;">${row.problemDescription || ''}</textarea>
                     </div>
                     <div style="margin-bottom: 15px;">
                         <label style="display: block; margin-bottom: 5px; font-weight: bold;">Estatus</label>
-                        <select id="swal-status" class="swal2-select" style="width: 100%; padding: 8px; border: 1px solid #d9d9d9; border-radius: 4px;">
+                        <select id="swal-status" class="swal2-select" style="width: 70%; padding: 8px; border: 1px solid #d9d9d9; border-radius: 4px;">
                             <option value="1" ${row.statusId === 1 ? 'selected' : ''}>Pendiente</option>
                             <option value="2" ${row.statusId === 2 ? 'selected' : ''}>En progreso</option>
                             <option value="3" ${row.statusId === 3 ? 'selected' : ''}>Resuelto</option>
@@ -129,6 +129,7 @@ export const AdminIndex = () => {
                     </div>
                 </div>
             `,
+            width: '600px',
             focusConfirm: false,
             showCancelButton: true,
             confirmButtonText: 'Guardar cambios',
