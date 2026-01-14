@@ -9,6 +9,7 @@ export const API_CONFIG = {
   endpoints: {
     auth: {
       login: "/api/Auth/Login",
+      logout: "/api/Auth/Logout",
     },
     ticketForm: {
       tickets: "/api/TicketForm/GetTickets",
