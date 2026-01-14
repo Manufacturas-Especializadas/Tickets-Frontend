@@ -2,21 +2,25 @@ import { Route, Routes } from "react-router";
 // import { HomeIndex } from "../pages/HomePage/HomeIndex";
 import { TicketForm } from "../pages/Tickets/TicketForm";
 import { AdminIndex } from "../pages/Admin/AdminIndex";
+import { Login } from "../pages/Auth/Login";
 
 const MyRoutes = () => {
-    return (
-        <>
-            <Routes>
-                {/* <Route path="/" element={<HomeIndex />} /> */}
+  return (
+    <>
+      <Routes>
+        {/* <Route path="/" element={<HomeIndex />} /> */}
 
-                {/* Form */}
-                <Route path="/" element={<TicketForm />} />
+        {/* Auth */}
+        <Route path="/login" element={<Login />} />
 
-                {/* Admin */}
-                <Route path="/administrador" element={<AdminIndex />} />
-            </Routes>
-        </>
-    )
-}
+        {/* Form */}
+        <Route path="/" element={<TicketForm />} />
 
-export default MyRoutes
+        {/* Admin */}
+        <Route path="/administrador" element={<AdminIndex />} />
+      </Routes>
+    </>
+  );
+};
+
+export default MyRoutes;
