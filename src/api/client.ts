@@ -8,7 +8,24 @@ class ApiClient {
   }
 
   private getHeaders(customHeaders: HeadersInit = {}): HeadersInit {
-    con;
+    const headers: any = {
+      "Content-Type": "application/json",
+      ...customHeaders,
+    };
+
+    const token = localStorage.getItem("token");
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
+    return headers;
+  }
+
+  private handleUnauthorized() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+
+    window.location.href = "/login";
   }
 
   private async request<T>(
@@ -16,18 +33,28 @@ class ApiClient {
     options: RequestInit = {}
   ): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`;
+
+    const headers = this.getHeaders(options.headers);
+
     const response = await fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-        ...options.headers,
-      },
       ...options,
+      headers,
     });
 
+    if (response.status === 401) {
+      this.handleUnauthorized();
+      throw new Error("Sesión expirada. Por favor inicia sesión nuevamente.");
+    }
+
     if (!response.ok) {
-      throw new Error(
-        `HTTP Error: ${response.status} - ${response.statusText}`
-      );
+      let errorMessage = `HTTP Error: ${response.status}`;
+      try {
+        const errorBody = await response.json();
+        if (errorBody && errorBody.message) errorMessage = errorBody.message;
+      } catch (e) {
+        errorMessage = `${response.status} - ${response.statusText}`;
+      }
+      throw new Error(errorMessage);
     }
 
     const contentType = response.headers.get("content-type");
